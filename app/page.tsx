@@ -51,9 +51,12 @@ export default function Home() {
           id="producto"
           className="mx-auto w-full max-w-6xl px-6 pb-24 md:px-10 md:pb-32"
         >
-          <ol className="grid grid-cols-2 gap-x-6 gap-y-8 border-t border-black/10 pt-8 sm:grid-cols-5">
+          <ol className="-mx-6 flex snap-x snap-mandatory gap-8 overflow-x-auto border-t border-black/10 px-6 pt-8 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] sm:mx-0 sm:grid sm:grid-cols-5 sm:gap-x-6 sm:overflow-visible sm:px-0 sm:pb-0 [&::-webkit-scrollbar]:hidden">
             {steps.map((step, index) => (
-              <li key={step.label} className="min-w-0">
+              <li
+                key={step.label}
+                className="w-[7.75rem] shrink-0 snap-start sm:w-auto sm:min-w-0"
+              >
                 <p className="text-[11px] tracking-[0.14em] text-muted-foreground uppercase">
                   {step.n}
                 </p>
@@ -61,7 +64,7 @@ export default function Home() {
                   {step.label}
                 </p>
                 {index < steps.length - 1 ? (
-                  <p className="mt-3 hidden text-black/25 sm:block" aria-hidden>
+                  <p className="mt-3 text-black/25" aria-hidden>
                     →
                   </p>
                 ) : null}

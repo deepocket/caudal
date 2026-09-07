@@ -11,10 +11,8 @@ export function Wordmark({
   return (
     <a
       href={href}
-      className={cn(
-        "text-brand font-medium tracking-[-0.04em] lowercase",
-        className,
-      )}
+      aria-label={site.name}
+      className={cn("wordmark text-brand lowercase", className)}
     >
       {site.wordmark}
     </a>
