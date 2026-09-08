@@ -10,6 +10,8 @@ export function Wordmark({
 }) {
   return (
     <a href={href} aria-label={site.name} className={cn("inline-flex", className)}>
+      {/* Locked vector wordmark: served as-is, never re-rendered as live type. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/caudal-wordmark.svg"
         alt="caudal"
