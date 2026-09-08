@@ -51,7 +51,7 @@ export default function Home() {
           id="producto"
           className="mx-auto w-full max-w-6xl px-6 pb-24 md:px-10 md:pb-32"
         >
-          <ol className="-mx-6 flex snap-x snap-mandatory gap-8 overflow-x-auto border-t border-black/10 px-6 pt-8 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] sm:mx-0 sm:grid sm:grid-cols-5 sm:gap-x-6 sm:overflow-visible sm:px-0 sm:pb-0 [&::-webkit-scrollbar]:hidden">
+          <ol className="-mx-6 flex snap-x snap-mandatory scroll-pl-6 gap-8 overflow-x-auto border-t border-black/10 px-6 pt-8 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] sm:mx-0 sm:grid sm:grid-cols-5 sm:gap-x-6 sm:overflow-visible sm:px-0 sm:pb-0 [&::-webkit-scrollbar]:hidden">
             {steps.map((step, index) => (
               <li
                 key={step.label}
