@@ -9,12 +9,12 @@ export function Wordmark({
   href?: string;
 }) {
   return (
-    <a
-      href={href}
-      aria-label={site.name}
-      className={cn("wordmark text-brand lowercase", className)}
-    >
-      {site.wordmark}
+    <a href={href} aria-label={site.name} className={cn("inline-flex", className)}>
+      <img
+        src="/caudal-wordmark.svg"
+        alt="caudal"
+        className="h-8 w-auto md:h-10"
+      />
     </a>
   );
 }

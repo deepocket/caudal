@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <div id="top" className="flex min-h-full flex-col">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6 md:px-10">
-        <Wordmark className="text-[22px]" />
+        <Wordmark />
         <DemoButton />
       </header>
 
@@ -141,7 +141,7 @@ export default function Home() {
           id="demo"
           className="mx-auto flex w-full max-w-6xl flex-col items-start px-6 py-24 md:px-10 md:py-32"
         >
-          <Wordmark className="text-4xl md:text-6xl" />
+          <Wordmark />
           <div className="mt-10">
             <DemoButton size="hero" />
           </div>
