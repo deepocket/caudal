@@ -2,46 +2,20 @@
 
 import { Check } from "lucide-react";
 import { useDemoStep, useInView } from "@/hooks/use-in-view";
+import { flowStages } from "@/lib/flow-stages";
 import { cn } from "@/lib/utils";
 
 // Each stage leaves the quote in the status the app shows, with the app's colors.
-const stages = [
-  {
-    verb: "Cotiza",
-    detail: "PDF con fotos, condición y lote de cada pieza.",
-    status: "Enviada",
-    tone: "bg-app-fill text-app-ink ring-1 ring-black/10",
-    dot: "bg-app-faint",
-  },
-  {
-    verb: "Aparta",
-    detail: "Al aceptar, el stock se reserva solo.",
-    status: "Aceptada",
-    tone: "bg-app-gold-50 text-app-gold-700 ring-1 ring-app-gold-100",
-    dot: "bg-app-gold-700",
-  },
-  {
-    verb: "Entrega",
-    detail: "Cada pieza sale ligada a su lote.",
-    status: "Entregada",
-    tone: "bg-app-primary text-white",
-    dot: "bg-app-green-200",
-  },
-  {
-    verb: "Factura",
-    detail: "El CFDI se timbra desde la cotización.",
-    status: "Facturada",
-    tone: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100",
-    dot: "bg-emerald-500",
-  },
-  {
-    verb: "Cobra",
-    detail: "Estados de cuenta en un clic.",
-    status: "Cobrada",
-    tone: "bg-app-green-100 text-app-primary ring-1 ring-app-green-200",
-    dot: "bg-app-accent",
-  },
+// Copy lives in lib/flow-stages.ts; here each status gets the app's colors.
+const tones = [
+  { tone: "bg-app-fill text-app-ink ring-1 ring-black/10", dot: "bg-app-faint" },
+  { tone: "bg-app-gold-50 text-app-gold-700 ring-1 ring-app-gold-100", dot: "bg-app-gold-700" },
+  { tone: "bg-app-primary text-white", dot: "bg-app-green-200" },
+  { tone: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100", dot: "bg-emerald-500" },
+  { tone: "bg-app-green-100 text-app-primary ring-1 ring-app-green-200", dot: "bg-app-accent" },
 ] as const;
+
+const stages = flowStages.map((stage, index) => ({ ...stage, ...tones[index] }));
 
 const completed = {
   status: "Completada",

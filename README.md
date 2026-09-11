@@ -55,3 +55,22 @@ Variables de entorno (ver `.env.example`; en local van en `.env.local`, que no s
 - **Vercel:** agrega las mismas variables en Project Settings → Environment Variables (Production y Preview) y vuelve a desplegar.
 - **Sin configurar:** en desarrollo, la solicitud se imprime en la consola del servidor y el formulario muestra el éxito, para probar la interfaz. En producción, el formulario muestra un error con el correo de contacto.
 - **Anti-spam:** campo trampa oculto y límite de 5 envíos cada 10 minutos por IP (en memoria, por instancia; para más, usa el Firewall de Vercel).
+
+## SEO y agentes de IA
+
+El contenido vive en datos, no en el JSX, para que la página, los datos estructurados y las versiones para agentes digan siempre lo mismo:
+
+| Archivo | Qué contiene |
+| --- | --- |
+| `lib/site.ts` | Título, descripción y palabras clave para México; correo y **teléfono de ventas**. |
+| `lib/product-content.ts` | Qué hace cada módulo (bento, JSON-LD y Markdown). |
+| `lib/faq.ts` | Preguntas frecuentes (sección, `FAQPage` y Markdown). |
+| `lib/flow-stages.ts`, `lib/audiences.ts`, `lib/proof.ts` | Etapas, perfiles y cifras. |
+
+- **Metadatos:** `app/layout.tsx` (canónica, `es-MX`, Open Graph, X, robots). La imagen para compartir la genera `app/opengraph-image.tsx`, con Inter porque el renderizador mide mal la Geist.
+- **Datos estructurados:** `lib/structured-data.ts` arma un grafo schema.org (`Organization`, `WebSite`, `SoftwareApplication`, `WebPage`, `FAQPage`).
+- **Rastreo:** `app/robots.ts` invita a buscadores y agentes de IA (GPTBot, ClaudeBot, PerplexityBot…); `app/sitemap.ts` y `app/manifest.ts`.
+- **Para agentes:** `/llms.txt` (resumen según [llmstxt.org](https://llmstxt.org)) y `/index.md` (toda la página en Markdown). Pedir `/` con `Accept: text/markdown` devuelve el Markdown (`next.config.ts`).
+- **Demos:** llevan `data-nosnippet` para que Google no muestre los datos de ejemplo como si fueran clientes.
+- **Llamadas:** llena `site.phone` (formato E.164 y cómo se lee) y aparecen el teléfono en el encabezado, la tarjeta "¿Prefieres llamar?", el botón "Llamar" en la barra móvil y el `telephone` en los datos estructurados. Los enlaces llevan `data-cta="llamar"` para medirlos con tu etiqueta de analítica.
+- **Search Console:** pon el token en `GOOGLE_SITE_VERIFICATION`, verifica el dominio y envía `https://trycaudal.com/sitemap.xml`.

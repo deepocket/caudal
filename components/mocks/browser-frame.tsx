@@ -14,6 +14,7 @@ export function BrowserFrame({
   return (
     <div
       aria-hidden
+      data-nosnippet
       className={cn(
         "overflow-hidden rounded-xl border border-black/10 bg-white shadow-[0_30px_70px_-36px_rgba(17,17,17,0.4)]",
         className,

@@ -3,27 +3,14 @@ import { LotTrace } from "@/components/landing/audience/lot-trace";
 import { ModulesGrid } from "@/components/landing/audience/modules-grid";
 import { OwnerDashboard } from "@/components/landing/audience/owner-dashboard";
 import { Band } from "@/components/landing/frame";
+import { audiences, type AudienceKey } from "@/lib/audiences";
 
-const audiences = [
-  {
-    lead: "Organizaciones con muchos procesos que atender.",
-    body: "Cotizaciones, compras, inventario, entregas, facturas, cobranza, tareas y chat viven en un mismo lugar y comparten los mismos datos. Nada se queda en una hoja aparte.",
-    link: { href: "#producto", label: "Ver el producto" },
-    graphic: <ModulesGrid />,
-  },
-  {
-    lead: "Proveedores de salud que necesitan control, transparencia y orden.",
-    body: "Cada pieza ligada a su lote y a su caducidad, cada entrega a su cotización y cada factura a su venta. Si alguien pregunta, la respuesta está a un clic.",
-    link: { href: "#pruebalo", label: "Pruébalo" },
-    graphic: <LotTrace />,
-  },
-  {
-    lead: "Dueños que quieren ver su negocio completo.",
-    body: "Ventas, ingresos, compras, margen y lo que falta cobrar en una sola pantalla, sin pedir reportes ni esperar al cierre de mes.",
-    link: { href: "#contacto", label: "Agendar demo" },
-    graphic: <OwnerDashboard />,
-  },
-] as const;
+// Copy lives in lib/audiences.ts; each audience gets its graphic here.
+const graphics: Record<AudienceKey, React.ReactNode> = {
+  procesos: <ModulesGrid />,
+  control: <LotTrace />,
+  duenos: <OwnerDashboard />,
+};
 
 /** Stripe's dark "choose your path" band, told as the three kinds of business Caudal serves. */
 export function Audience() {
@@ -44,8 +31,8 @@ export function Audience() {
       <div className="mt-14 grid gap-14 md:mt-20 lg:grid-cols-3 lg:gap-5">
         {audiences.map((audience) => (
           <article key={audience.lead}>
-            <div className="relative h-[320px] overflow-hidden rounded-xl bg-[#21431a] ring-1 ring-white/10 [background-image:radial-gradient(90%_70%_at_85%_0%,rgba(214,230,200,0.16),transparent_60%),radial-gradient(80%_60%_at_0%_100%,rgba(217,164,65,0.12),transparent_65%)]">
-              {audience.graphic}
+            <div data-nosnippet className="relative h-[320px] overflow-hidden rounded-xl bg-[#21431a] ring-1 ring-white/10 [background-image:radial-gradient(90%_70%_at_85%_0%,rgba(214,230,200,0.16),transparent_60%),radial-gradient(80%_60%_at_0%_100%,rgba(217,164,65,0.12),transparent_65%)]">
+              {graphics[audience.key]}
             </div>
             <p className="mt-7 text-[17px] leading-relaxed text-primary-foreground/60">
               <span className="font-medium text-primary-foreground">{audience.lead}</span>{" "}

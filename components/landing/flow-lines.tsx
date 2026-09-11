@@ -64,7 +64,8 @@ function buildThreads(): Thread[] {
   });
 }
 
-const threads = buildThreads();
+/** Shared with the Open Graph image so shared links show the same river. */
+export const threads = buildThreads();
 
 /** `id` keeps gradient and mask references unique when the ribbon appears twice. */
 export function FlowLines({ id = "river", className }: { id?: string; className?: string }) {

@@ -15,6 +15,8 @@ export function Wordmark({
       <img
         src="/caudal-wordmark.svg"
         alt="caudal"
+        width={107}
+        height={40}
         className="h-8 w-auto md:h-10"
       />
     </a>

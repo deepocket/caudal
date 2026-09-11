@@ -15,6 +15,7 @@ export function AppSurface({
   return (
     <div
       aria-hidden
+      data-nosnippet
       className={cn(
         "font-app text-[12px] leading-snug tracking-[-0.011em] text-app-ink tabular-nums select-none",
         className,
@@ -125,6 +126,7 @@ export function PhoneFrame({
   return (
     <div
       aria-hidden
+      data-nosnippet
       className={cn(
         "relative w-[230px] rounded-[2.2rem] bg-[#0f1411] p-[7px] shadow-[0_30px_70px_-30px_rgba(17,17,17,0.55)]",
         className,

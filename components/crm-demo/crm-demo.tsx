@@ -233,6 +233,8 @@ export function CrmDemo() {
     <div
       role="region"
       aria-label="Demo interactiva de Caudal"
+      // Sample data: keep fictional clients out of search snippets.
+      data-nosnippet
       className="overflow-hidden rounded-2xl bg-white font-app text-[12px] leading-snug tracking-[-0.011em] text-app-ink tabular-nums shadow-[0_50px_120px_-50px_rgba(17,40,17,0.55),0_0_0_1px_rgba(17,17,17,0.08)]"
     >
       {/* Window chrome */}

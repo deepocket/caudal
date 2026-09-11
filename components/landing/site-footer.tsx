@@ -1,3 +1,4 @@
+import { CallLink } from "@/components/landing/call-link";
 import { FlowLines } from "@/components/landing/flow-lines";
 import { Wordmark } from "@/components/wordmark";
 import { site } from "@/lib/site";
@@ -6,6 +7,7 @@ const footerLinks = [
   { href: "#pruebalo", label: "Pruébalo" },
   { href: "#producto", label: "Producto" },
   { href: "#para-quien", label: "Para quién" },
+  { href: "#preguntas", label: "Preguntas" },
   { href: "#contacto", label: "Contacto" },
 ] as const;
 
@@ -45,12 +47,12 @@ export function SiteFooter() {
           </nav>
         </div>
         <div className="flex flex-col gap-2 border-t border-white/10 py-7 text-[13px] text-primary-foreground/50 md:flex-row md:justify-between">
-          <a
-            href={`mailto:${site.email}`}
-            className="transition-colors hover:text-primary-foreground"
-          >
-            {site.email}
-          </a>
+          <p className="flex flex-wrap gap-x-5 gap-y-1">
+            <CallLink className="transition-colors hover:text-primary-foreground" />
+            <a href={`mailto:${site.email}`} className="transition-colors hover:text-primary-foreground">
+              {site.email}
+            </a>
+          </p>
           <p>
             © 2026 {site.name} · {site.url.replace("https://", "")}
           </p>
