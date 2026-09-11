@@ -3,7 +3,9 @@ export const site = {
   wordmark: "caudal",
   claim: "De la cotización al cobro, sin fugas.",
   description:
-    "El flujo del proveedor de insumos de salud — cotización, orden, cirugía, factura y cobro — medido en un solo cauce.",
-  demoHref: "mailto:hola@caudal.app?subject=Agendar%20demo%20Caudal",
+    "El sistema de las distribuidoras de material quirúrgico: cotiza, compra, entrega con lote, timbra y cobra en un solo cauce.",
+  email: "hola@caudal.app",
+  // Every "Agendar demo" lands on the lead form.
+  demoHref: "#contacto",
   url: "https://trycaudal.com",
 } as const;
