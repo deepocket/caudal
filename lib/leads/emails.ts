@@ -16,17 +16,9 @@ const colors = {
   rail: "#e2dfd6",
 };
 
-// Dark palette for clients that honor prefers-color-scheme (Apple Mail, Outlook
-// for Mac and iOS). Clients that darken emails on their own skip it, so the day
-// wordmark carries a cream halo that only shows on their dark ground.
-const night = {
-  ground: "#171815",
-  card: "#1f201c",
-  ink: "#f4f2eb",
-  muted: "#a3a096",
-  rail: "#34352f",
-};
-
+// The site's cream ground and green wordmark in every theme: "light only" keeps
+// Apple Mail from darkening the email. Gmail's and Outlook's apps darken it anyway,
+// so the wordmark carries a cream halo that only shows on their dark ground.
 const wordmark = { width: 92, height: 28 };
 
 const font = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif";
@@ -61,8 +53,8 @@ function table(lead: LeadValues) {
     .map(
       ([label, value]) => `
         <tr>
-          <td class="rail muted" style="padding:12px 0;border-top:1px solid ${colors.rail};width:120px;vertical-align:top;font-size:13px;color:${colors.muted};">${label}</td>
-          <td class="rail ink" style="padding:12px 0;border-top:1px solid ${colors.rail};vertical-align:top;font-size:15px;color:${colors.ink};">${html(value)}</td>
+          <td style="padding:12px 0;border-top:1px solid ${colors.rail};width:120px;vertical-align:top;font-size:13px;color:${colors.muted};">${label}</td>
+          <td style="padding:12px 0;border-top:1px solid ${colors.rail};vertical-align:top;font-size:15px;color:${colors.ink};">${html(value)}</td>
         </tr>`,
     )
     .join("");
@@ -74,44 +66,30 @@ function layout({ preheader, body }: { preheader: string; body: string }) {
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light dark">
-    <meta name="supported-color-schemes" content="light dark">
+    <meta name="color-scheme" content="light only">
+    <meta name="supported-color-schemes" content="light only">
     <style>
-      :root { color-scheme: light dark; supported-color-schemes: light dark; }
-      @media (prefers-color-scheme: dark) {
-        .ground { background: ${night.ground} !important; }
-        .card { background: ${night.card} !important; border-color: ${night.rail} !important; }
-        .rail { border-color: ${night.rail} !important; }
-        .ink { color: ${night.ink} !important; }
-        .muted { color: ${night.muted} !important; }
-        .wordmark { display: none !important; }
-        .wordmark-night { display: block !important; max-height: none !important; overflow: visible !important; }
-      }
+      :root { color-scheme: light only; supported-color-schemes: light only; }
     </style>
   </head>
-  <body class="ground" style="margin:0;padding:0;background:${colors.ground};font-family:${font};">
+  <body style="margin:0;padding:0;background:${colors.ground};font-family:${font};">
     <span style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(preheader)}</span>
-    <table class="ground" role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${colors.ground};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${colors.ground};">
       <tr>
         <td align="center" style="padding:40px 16px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
             <tr>
               <td style="padding:0 4px 20px;">
-                <img class="wordmark" src="${site.url}/email/caudal-wordmark.png" width="${wordmark.width}" height="${wordmark.height}" alt="caudal" style="display:block;border:0;width:${wordmark.width}px;height:${wordmark.height}px;font-size:24px;font-weight:700;color:${colors.brand};">
-                <!--[if !mso]><!-->
-                <div class="wordmark-night" style="display:none;max-height:0;overflow:hidden;">
-                  <img src="${site.url}/email/caudal-wordmark-night.png" width="${wordmark.width}" height="${wordmark.height}" alt="caudal" style="display:block;border:0;width:${wordmark.width}px;height:${wordmark.height}px;">
-                </div>
-                <!--<![endif]-->
+                <img src="${site.url}/email/caudal-wordmark.png" width="${wordmark.width}" height="${wordmark.height}" alt="caudal" style="display:block;border:0;width:${wordmark.width}px;height:${wordmark.height}px;font-size:24px;font-weight:700;color:${colors.brand};">
               </td>
             </tr>
             <tr>
-              <td class="card" style="background:${colors.card};border:1px solid ${colors.rail};border-radius:16px;padding:32px;">
+              <td style="background:${colors.card};border:1px solid ${colors.rail};border-radius:16px;padding:32px;">
                 ${body}
               </td>
             </tr>
             <tr>
-              <td class="muted" style="padding:20px 4px 0;font-size:12px;line-height:1.5;color:${colors.muted};">
+              <td style="padding:20px 4px 0;font-size:12px;line-height:1.5;color:${colors.muted};">
                 Caudal · De la cotización al cobro, sin fugas. · trycaudal.com
               </td>
             </tr>
@@ -142,10 +120,10 @@ export function ownerNotification(lead: LeadValues, receivedAt: Date) {
     html: layout({
       preheader: `${lead.contacto} de ${lead.empresa} pidió una demo.`,
       body: `
-        <p class="muted" style="margin:0 0 6px;font-size:13px;color:${colors.muted};">Solicitud de demo · ${escapeHtml(when)}</p>
-        <h1 class="ink" style="margin:0 0 20px;font-size:22px;line-height:1.25;font-weight:600;color:${colors.ink};">${escapeHtml(lead.empresa)} quiere ver Caudal</h1>
+        <p style="margin:0 0 6px;font-size:13px;color:${colors.muted};">Solicitud de demo · ${escapeHtml(when)}</p>
+        <h1 style="margin:0 0 20px;font-size:22px;line-height:1.25;font-weight:600;color:${colors.ink};">${escapeHtml(lead.empresa)} quiere ver Caudal</h1>
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${table(lead)}</table>
-        <p class="muted" style="margin:24px 0 0;font-size:14px;line-height:1.5;color:${colors.muted};">Responde a este correo para escribirle directamente a ${escapeHtml(lead.contacto)}.</p>`,
+        <p style="margin:24px 0 0;font-size:14px;line-height:1.5;color:${colors.muted};">Responde a este correo para escribirle directamente a ${escapeHtml(lead.contacto)}.</p>`,
     }),
     text: `Solicitud de demo · ${when}\n\n${textRows(lead)}\n\nResponde a este correo para escribirle directamente a ${lead.contacto}.`,
   };
@@ -162,11 +140,11 @@ export function leadConfirmation(lead: LeadValues, { canReply }: { canReply: boo
     html: layout({
       preheader: "Recibimos tus datos. Te contactaremos para agendar tu demo.",
       body: `
-        <h1 class="ink" style="margin:0 0 16px;font-size:22px;line-height:1.25;font-weight:600;color:${colors.ink};">Hola, ${escapeHtml(lead.contacto)}</h1>
-        <p class="ink" style="margin:0 0 16px;font-size:15px;line-height:1.6;color:${colors.ink};">Gracias por tu interés en Caudal. Recibimos los datos de ${escapeHtml(lead.empresa)} y te contactaremos para agendar una demo con tu operación: una venta de la cotización al cobro.</p>
-        <p class="muted" style="margin:24px 0 4px;font-size:13px;color:${colors.muted};">Lo que nos compartiste</p>
+        <h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;font-weight:600;color:${colors.ink};">Hola, ${escapeHtml(lead.contacto)}</h1>
+        <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:${colors.ink};">Gracias por tu interés en Caudal. Recibimos los datos de ${escapeHtml(lead.empresa)} y te contactaremos para agendar una demo con tu operación: una venta de la cotización al cobro.</p>
+        <p style="margin:24px 0 4px;font-size:13px;color:${colors.muted};">Lo que nos compartiste</p>
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${table(lead)}</table>
-        ${replyLine ? `<p class="muted" style="margin:24px 0 0;font-size:14px;line-height:1.5;color:${colors.muted};">${replyLine}</p>` : ""}`,
+        ${replyLine ? `<p style="margin:24px 0 0;font-size:14px;line-height:1.5;color:${colors.muted};">${replyLine}</p>` : ""}`,
     }),
     text: `Hola, ${lead.contacto}\n\nGracias por tu interés en Caudal. Recibimos los datos de ${lead.empresa} y te contactaremos para agendar una demo con tu operación: una venta de la cotización al cobro.\n\nLo que nos compartiste:\n${textRows(lead)}${replyLine ? `\n\n${replyLine}` : ""}\n\nCaudal · De la cotización al cobro, sin fugas. · trycaudal.com`,
   };
