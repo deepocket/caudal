@@ -31,7 +31,11 @@ export const site = {
   phone: { e164: "", display: "" },
   // Every "Agendar demo" lands on the lead form.
   demoHref: "#contacto",
-  url: "https://trycaudal.com",
+  // Vercel serves www as the primary domain (the apex redirects there), so
+  // canonical URLs, sitemap and structured data must use it too.
+  url: "https://www.trycaudal.com",
+  /** How the domain reads on the page. */
+  domain: "trycaudal.com",
   locale: "es-MX",
 } as const;
 

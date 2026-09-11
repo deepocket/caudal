@@ -73,4 +73,4 @@ El contenido vive en datos, no en el JSX, para que la página, los datos estruct
 - **Para agentes:** `/llms.txt` (resumen según [llmstxt.org](https://llmstxt.org)) y `/index.md` (toda la página en Markdown). Pedir `/` con `Accept: text/markdown` devuelve el Markdown (`next.config.ts`).
 - **Demos:** llevan `data-nosnippet` para que Google no muestre los datos de ejemplo como si fueran clientes.
 - **Llamadas:** llena `site.phone` (formato E.164 y cómo se lee) y aparecen el teléfono en el encabezado, la tarjeta "¿Prefieres llamar?", el botón "Llamar" en la barra móvil y el `telephone` en los datos estructurados. Los enlaces llevan `data-cta="llamar"` para medirlos con tu etiqueta de analítica.
-- **Search Console:** pon el token en `GOOGLE_SITE_VERIFICATION`, verifica el dominio y envía `https://trycaudal.com/sitemap.xml`.
+- **Search Console:** pon el token en `GOOGLE_SITE_VERIFICATION`, verifica el dominio y envía `https://www.trycaudal.com/sitemap.xml`. El dominio principal en Vercel es `www` (el apex redirige ahí); si algún día cambias eso, cambia también `site.url`.

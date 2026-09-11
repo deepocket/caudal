@@ -94,7 +94,7 @@ export default async function Image() {
             >
               Cotiza · Aparta · Entrega · Factura · Cobra
             </div>
-            <div style={{ display: "flex" }}>{site.url.replace("https://", "")}</div>
+            <div style={{ display: "flex" }}>{site.domain}</div>
           </div>
         </div>
       </div>

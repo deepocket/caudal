@@ -54,7 +54,7 @@ export function SiteFooter() {
             </a>
           </p>
           <p>
-            © 2026 {site.name} · {site.url.replace("https://", "")}
+            © 2026 {site.name} · {site.domain}
           </p>
         </div>
       </div>
