@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -85,7 +86,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang={site.locale}
       className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} h-full`}
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        {/* Vercel Web Analytics: page views without cookies, only counted on Vercel. */}
+        <Analytics />
+      </body>
     </html>
   );
 }

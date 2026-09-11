@@ -24,6 +24,8 @@ npm start
 
 Proyecto listo para conectar a Vercel (framework Next.js). El formulario de contacto y el panel de solicitudes necesitan las variables de entorno descritas abajo.
 
+Las visitas se cuentan con Vercel Web Analytics (`<Analytics />` en `app/layout.tsx`, sin cookies y solo en los despliegues de Vercel). Se ven en el proyecto de Vercel → Analytics.
+
 ## Contenido
 
 1. **Hero** con la cinta de marca (`components/landing/flow-lines.tsx`) y la franja de etapas, donde un folio cambia de estado en vivo.
