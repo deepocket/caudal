@@ -22,7 +22,7 @@ npm start
 
 ## Vercel
 
-Proyecto listo para conectar a Vercel (framework Next.js). El formulario de contacto necesita las variables de entorno descritas abajo.
+Proyecto listo para conectar a Vercel (framework Next.js). El formulario de contacto y el panel de solicitudes necesitan las variables de entorno descritas abajo.
 
 ## Contenido
 
@@ -37,7 +37,7 @@ Las demos (`components/mocks/`) recrean la app real con datos ficticios (`lib/de
 
 ## Formulario de contacto
 
-Todos los **Agendar demo** llevan a `#contacto` (`components/landing/contact.tsx`). El formulario lo procesa una Server Action (`lib/leads/actions.ts`) y manda dos correos separados con [Resend](https://resend.com):
+Todos los **Agendar demo** llevan a `#contacto` (`components/landing/contact.tsx`). El formulario lo procesa una Server Action (`lib/leads/actions.ts`), que guarda la solicitud para el [panel](#panel-de-solicitudes) y manda dos correos separados con [Resend](https://resend.com):
 
 1. Un **aviso interno** a `LEAD_NOTIFY_EMAIL` con todos los datos. Si respondes a ese correo, le escribes directamente al cliente.
 2. Una **confirmación al cliente**. Nunca incluye el correo interno (no hay cc ni bcc).
@@ -55,6 +55,32 @@ Variables de entorno (ver `.env.example`; en local van en `.env.local`, que no s
 - **Vercel:** agrega las mismas variables en Project Settings → Environment Variables (Production y Preview) y vuelve a desplegar.
 - **Sin configurar:** en desarrollo, la solicitud se imprime en la consola del servidor y el formulario muestra el éxito, para probar la interfaz. En producción, el formulario muestra un error con el correo de contacto.
 - **Anti-spam:** campo trampa oculto y límite de 5 envíos cada 10 minutos por IP (en memoria, por instancia; para más, usa el Firewall de Vercel).
+- **Si falla el correo:** la solicitud se guarda antes de enviar. Si el aviso interno falla pero la solicitud quedó guardada, el cliente ve el éxito igual y la encuentras en el panel.
+
+## Panel de solicitudes
+
+En `/admin` ves cada solicitud del formulario: los datos del contacto, botones para llamar, escribir por WhatsApp o por correo, su estado (Nuevo → Contactado → Demo agendada → Cliente, o Perdido) y tus notas. No aparece en buscadores.
+
+- **Entrar:** una sola contraseña, `ADMIN_PASSWORD`. La sesión dura 30 días en una cookie firmada con `ADMIN_SESSION_SECRET` (genera una con `openssl rand -base64 32`). Cambiar cualquiera de las dos cierra todas las sesiones. Máximo 5 intentos cada 10 minutos por IP.
+- **Dónde se guardan** (`lib/leads/store/`): el panel y el formulario usan la misma interfaz, así que cambiar de almacenamiento no toca nada más.
+
+| Dónde corre | Sin `LEADS_DATABASE_URL` | Con `LEADS_DATABASE_URL` |
+| --- | --- | --- |
+| Tu equipo (`npm run dev`) | `.data/leads.json`, fuera del repo | Supabase, `sitio.leads` |
+| Vercel | No se guardan; solo llegan por correo | Supabase, `sitio.leads` |
+
+`.data/` está en `.gitignore`: tiene nombres, teléfonos y correos, y este repo es público.
+
+### Supabase
+
+Las solicitudes viven en el proyecto de Supabase del CRM (`artroconfort-logistics`), en su propio esquema `sitio`. La página no usa las llaves de Supabase, que abren toda la base: entra por el pooler con el usuario `caudal_sitio`, que solo puede leer, crear y actualizar `sitio.leads`. No puede borrar ni ver clientes, facturas o secretos. Si sus credenciales se filtran, el resto de la base queda fuera de su alcance.
+
+Para montarlo de cero (en otro proyecto, por ejemplo):
+
+1. En **SQL Editor**, corre `supabase/migrations/20260911190000_sitio_leads.sql`. Crea el esquema, la tabla (las mismas columnas que el tipo `Lead` de `lib/leads/types.ts`) y el usuario `caudal_sitio`, todavía sin contraseña.
+2. Ponle contraseña, larga y solo con letras y números: `alter role caudal_sitio with password '…';`
+3. En **Connect → Transaction pooler** copia la cadena de conexión (puerto 6543), cambia el usuario por `caudal_sitio.<project-ref>` y pon esa contraseña. Guárdala como `LEADS_DATABASE_URL` en Vercel, como secreto y nunca con prefijo `NEXT_PUBLIC_`.
+4. Vuelve a desplegar.
 
 ## SEO y agentes de IA
 

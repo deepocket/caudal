@@ -1,9 +1,9 @@
 "use server";
 
-import { headers } from "next/headers";
 import { Resend } from "resend";
 import { leadConfirmation, ownerNotification } from "@/lib/leads/emails";
-import { isRateLimited } from "@/lib/leads/rate-limit";
+import { clientIp, isRateLimited } from "@/lib/leads/rate-limit";
+import { getLeadStore } from "@/lib/leads/store";
 import type { LeadFormState, LeadValues } from "@/lib/leads/types";
 import { readLead, validateLead } from "@/lib/leads/validate";
 
@@ -17,6 +17,19 @@ const failure = (values: LeadValues, message?: string): LeadFormState => ({
   message: message ?? "No pudimos enviar tu solicitud. Inténtalo de nuevo o escríbenos directamente:",
   values,
 });
+
+/** Keeps the lead for the admin panel. Never throws: the email still carries it. */
+async function save(lead: LeadValues) {
+  const store = getLeadStore();
+  if (!store) return false;
+  try {
+    await store.create(lead);
+    return true;
+  } catch (error) {
+    console.error("[leads] No se pudo guardar la solicitud:", error);
+    return false;
+  }
+}
 
 /**
  * Lead form Server Action. Anyone can POST here, so it validates everything,
@@ -39,17 +52,14 @@ export async function submitLead(
     return { status: "invalid", errors, values: lead };
   }
 
-  const requestHeaders = await headers();
-  const ip =
-    requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    requestHeaders.get("x-real-ip") ||
-    "unknown";
-  if (isRateLimited(ip)) {
+  if (isRateLimited(await clientIp())) {
     return failure(
       lead,
       "Recibimos varias solicitudes seguidas. Espera unos minutos o escríbenos directamente:",
     );
   }
+
+  const saved = await save(lead);
 
   const apiKey = process.env.RESEND_API_KEY;
   const notifyTo = process.env.LEAD_NOTIFY_EMAIL;
@@ -66,7 +76,8 @@ export async function submitLead(
   const from = process.env.LEAD_FROM_EMAIL || FALLBACK_FROM;
   const replyTo = process.env.LEAD_REPLY_TO || undefined;
 
-  // The internal notice goes first: if it fails, the lead would be lost, so say so.
+  // The internal notice goes first: if it fails and the lead wasn't saved either,
+  // it would be lost, so say so.
   const notice = ownerNotification(lead, new Date());
   try {
     const { error } = await resend.emails.send({
@@ -79,11 +90,11 @@ export async function submitLead(
     });
     if (error) {
       console.error("[leads] Resend rechazó el aviso interno:", error.name, error.message);
-      return failure(lead);
+      if (!saved) return failure(lead);
     }
   } catch (error) {
     console.error("[leads] No se pudo contactar a Resend para el aviso interno:", error);
-    return failure(lead);
+    if (!saved) return failure(lead);
   }
 
   // A separate email, so the lead never sees the internal address (no cc, no bcc).

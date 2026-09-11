@@ -20,3 +20,23 @@ export type LeadFormState =
   | { status: "success"; contacto: string; correo: string };
 
 export const initialLeadState: LeadFormState = { status: "idle" };
+
+// A saved lead, shaped like its row in Supabase's sitio.leads table
+// (supabase/migrations), so either store returns the same object.
+
+export const leadStatuses = ["nuevo", "contactado", "demo", "cliente", "perdido"] as const;
+
+export type LeadStatus = (typeof leadStatuses)[number];
+
+export type Lead = LeadValues & {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  estado: LeadStatus;
+  notas: string;
+};
+
+/** What the admin can change on a lead; the visitor's own answers stay as sent. */
+export type LeadPatch = Partial<Pick<Lead, "estado" | "notas">>;
+
+export const notesMaxLength = 5000;

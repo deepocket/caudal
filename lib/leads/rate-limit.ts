@@ -1,5 +1,17 @@
 import "server-only";
 
+import { headers } from "next/headers";
+
+/** The visitor's IP as the platform forwards it, to key the limit on. */
+export async function clientIp() {
+  const requestHeaders = await headers();
+  return (
+    requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    requestHeaders.get("x-real-ip") ||
+    "unknown"
+  );
+}
+
 // Sliding window per IP, kept in memory. On serverless this is per instance, so
 // it only slows down bursts; add Vercel Firewall rate limiting for more.
 const WINDOW_MS = 10 * 60 * 1000;

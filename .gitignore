@@ -25,6 +25,9 @@
 *.pem
 /agent-tools
 
+# leads saved locally by the admin (names, phones, emails): never commit
+/.data/
+
 
 # debug
 npm-debug.log*

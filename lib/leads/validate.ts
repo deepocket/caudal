@@ -25,14 +25,19 @@ function stripControls(value: string) {
   return out;
 }
 
-function text(formData: FormData, field: LeadField, multiline = false) {
-  const raw = formData.get(field);
-  if (typeof raw !== "string") return "";
+/** Control characters out, whitespace tidied, cut at `max`. */
+export function cleanText(raw: string, max: number, multiline = false) {
   const clean = stripControls(raw);
   const normalized = multiline
     ? clean.replace(/\r\n?/g, "\n").replace(/\n{3,}/g, "\n\n").trim()
     : clean.replace(/\s+/g, " ").trim();
-  return normalized.slice(0, limits[field]);
+  return normalized.slice(0, max);
+}
+
+function text(formData: FormData, field: LeadField, multiline = false) {
+  const raw = formData.get(field);
+  if (typeof raw !== "string") return "";
+  return cleanText(raw, limits[field], multiline);
 }
 
 export function readLead(formData: FormData): LeadValues {
